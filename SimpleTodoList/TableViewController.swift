@@ -42,8 +42,10 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         tableView.estimatedRowHeight = 50
     }
     private func navigateToAddEditTVC() {
+//        let indexPath = tableView.indexPathForSelectedRow!
         let addEditTVC = AddEditTableViewController(style: .grouped)
         addEditTVC.delegate = self
+//        addEditTVC.todoText = todo[indexPath.section][indexPath.row]
         let addEditNC = UINavigationController(rootViewController: addEditTVC)
         present(addEditNC, animated: true, completion: nil)
     }
@@ -52,16 +54,16 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         
         navigateToAddEditTVC()
     }
-    func add(_ todos: [Todo]) {
-        todo.append(todos)
-        print("todo count:\(todo[1].count)")
-        print("todo index:\(IndexPath(row: todo[1].count, section: 1))")
-        tableView.insertRows(at: [IndexPath(row: todo[1].count, section: 1)], with: .automatic)
+    func add(_ todos: Todo) {
+        todo[1].append(todos)
+//        print("todo count:\(todo[1].count)")
+//        print("todo index:\(IndexPath(row: todo[1].count - 1, section: 1))")
+        tableView.insertRows(at: [IndexPath(row: todo[1].count - 1, section: 1)], with: .automatic)
     }
-    func edit(_ todos: [Todo]) {
+    func edit(_ todos: Todo) {
         if let indexPath = tableView.indexPathForSelectedRow {
-            todo.remove(at: indexPath.row)
-            todo.insert(todos, at: indexPath.row)
+            todo[indexPath.section].remove(at: indexPath.row)
+            todo[indexPath.section].insert(todos, at: indexPath.row)
             tableView.reloadRows(at: [indexPath], with: .automatic)
             tableView.deselectRow(at: indexPath, animated: true)
         }
@@ -84,11 +86,19 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         let todos = todo[indexPath.section][indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath)
        as! TodoTableViewCell
-        
         cell.update(with: todos)
+        cell.accessoryType = UITableViewCell.AccessoryType.detailDisclosureButton
         cell.showsReorderControl = true
         
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let addEditTVC = AddEditTableViewController(style: .grouped)
+        addEditTVC.delegate = self
+        addEditTVC.todoText = todo[indexPath.section][indexPath.row]
+        let addEditNC = UINavigationController(rootViewController: addEditTVC)
+        present(addEditNC, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -110,5 +120,12 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         let addEditNC = UINavigationController(rootViewController: addEditTVC)
         present(addEditNC, animated: true, completion: nil)
     }
-
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            todo[indexPath.section].remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
 }

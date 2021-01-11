@@ -8,8 +8,8 @@
 import UIKit
 
 protocol AddEditTCVDelegate: class {
-    func add(_ todo: [Todo])
-    func edit(_ todo: [Todo])
+    func add(_ todo: Todo)
+    func edit(_ todo: Todo)
 }
 
 class AddEditTableViewController: UITableViewController {
@@ -29,15 +29,16 @@ class AddEditTableViewController: UITableViewController {
             title = "Edit todo item"
 //            print(todoText?.title)
             titleCell.textField.text = todoText?.title
+//            print(titleCell.textField.text)
         }
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissViewController))
         navigationItem.rightBarButtonItem = doneButton
-        titleCell.textField.addTarget(self, action: #selector(textEsitingChanged(_:)), for: .editingChanged)
+        titleCell.textField.addTarget(self, action: #selector(textEditingChanged(_:)), for: .editingChanged)
 //        updateDoneButtonState()
     }
 
-    @objc func textEsitingChanged(_ sender: UITextField){
+    @objc func textEditingChanged(_ sender: UITextField){
         updateDoneButtonState()
     }
     
@@ -48,9 +49,9 @@ class AddEditTableViewController: UITableViewController {
     @objc func doneTodo(){
         let newTodo = Todo(symbol: "", title: titleCell.textField.text!)
         if self.todoText == nil {
-            delegate?.add([newTodo])
+            delegate?.add(newTodo)
         } else {
-            delegate?.edit([newTodo])
+            delegate?.edit(newTodo)
         }
         
         dismiss(animated: true, completion: nil)
@@ -73,7 +74,7 @@ class AddEditTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return AddEditTableViewCell()
+        return titleCell
     }
     
 }
