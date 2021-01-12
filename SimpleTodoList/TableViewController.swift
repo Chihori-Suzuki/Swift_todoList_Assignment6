@@ -111,20 +111,6 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         
     }
     
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-        
-        
-//        let addEditTVC = AddEditTableViewController(style: .grouped)
-//        addEditTVC.delegate = self
-//        addEditTVC.todoText = toDos[indexPath.section][indexPath.row]
-//        let addEditNC = UINavigationController(rootViewController: addEditTVC)
-//        present(addEditNC, animated: true, completion: nil)
-    }
-    
-    
-    
     @objc func deleteTodoItems() {
         if let indexPaths = tableView.indexPathsForSelectedRows {
             for indexPath in indexPaths {
@@ -133,12 +119,4 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
                 }
         }
     }
-    
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
-            toDos[indexPath.section].remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-        }
-    }
-    
 }

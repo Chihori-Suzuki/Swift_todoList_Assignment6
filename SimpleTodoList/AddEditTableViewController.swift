@@ -35,7 +35,7 @@ class AddEditTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissViewController))
         navigationItem.rightBarButtonItem = doneButton
         titleCell.textField.addTarget(self, action: #selector(textEditingChanged(_:)), for: .editingChanged)
-//        updateDoneButtonState()
+        updateDoneButtonState()
     }
 
     @objc func textEditingChanged(_ sender: UITextField){
@@ -60,13 +60,6 @@ class AddEditTableViewController: UITableViewController {
         let nameText = titleCell.textField.text ?? ""
         doneButton.isEnabled = !nameText.isEmpty
     }
-    
-//    private func containsTodoText(_ textField: UITextField) -> Bool {
-//        guard let text = textField.text, text.count >= 1 else {
-//            return false}
-//        return true
-//    }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
