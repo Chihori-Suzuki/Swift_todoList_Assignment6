@@ -111,6 +111,19 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var selectedRow = toDos[indexPath.section][indexPath.row]
+        print(selectedRow.symbol)
+        if selectedRow.symbol == "" || selectedRow.symbol == nil {
+            selectedRow.symbol = "✓"
+        }else{
+            selectedRow.symbol = ""
+        }
+        print(selectedRow)
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     @objc func deleteTodoItems() {
         if let indexPaths = tableView.indexPathsForSelectedRows {
             for indexPath in indexPaths {
