@@ -36,8 +36,10 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
         title = "Todo items"
         
         navigationItem.leftBarButtonItem = editButtonItem
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTodo))
-//        tableView.allowsMultipleSelectionDuringEditing = true
+        let deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteTodoItems))
+        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTodo))
+        navigationItem.rightBarButtonItems = [addButton, deleteButton]
+        tableView.allowsMultipleSelectionDuringEditing = true
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 50
     }
@@ -114,14 +116,23 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
 //        tableView.deselectRow(at: indexPath, animated: true)
         
         
-        let addEditTVC = AddEditTableViewController(style: .grouped)
-        addEditTVC.delegate = self
+//        let addEditTVC = AddEditTableViewController(style: .grouped)
+//        addEditTVC.delegate = self
 //        addEditTVC.todoText = toDos[indexPath.section][indexPath.row]
 //        let addEditNC = UINavigationController(rootViewController: addEditTVC)
 //        present(addEditNC, animated: true, completion: nil)
     }
     
     
+    
+    @objc func deleteTodoItems() {
+        if let indexPaths = tableView.indexPathsForSelectedRows {
+            for indexPath in indexPaths {
+                toDos[indexPath.section].remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+        }
+    }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
