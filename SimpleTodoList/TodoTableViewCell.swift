@@ -14,12 +14,12 @@ class TodoTableViewCell: UITableViewCell {
         lb.setContentHuggingPriority(.required, for: .horizontal)
         return lb
     }()
-    let todoNameLabe = UILabel()
+    let todoNameLabel = UILabel()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: nil)
-        let hStackView = HorizontalStackView(arrangedSubviews:  [todoSymbolLabel, todoNameLabe],spacing: 8, alignment: .fill, distribution: .fill)
+        let hStackView = HorizontalStackView(arrangedSubviews:  [todoSymbolLabel, todoNameLabel],spacing: 8, alignment: .fill, distribution: .fill)
         
         contentView.addSubview(hStackView)
         hStackView.matchParent(padding: .init(top: 8, left: 8, bottom: 8, right: 8))
@@ -33,6 +33,6 @@ class TodoTableViewCell: UITableViewCell {
 
     func update(with todos: Todo){
         todoSymbolLabel.text = todos.symbol
-        todoNameLabe.text = todos.title
+        todoNameLabel.text = todos.title
     }
 }
