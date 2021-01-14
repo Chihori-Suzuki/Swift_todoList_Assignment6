@@ -106,29 +106,32 @@ class TableViewController: UITableViewController, AddEditTCVDelegate {
     }
 
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let removedTodo = toDos.remove(at: sourceIndexPath.row)
-        toDos.insert(removedTodo, at: destinationIndexPath.row)
+        let removedTodo = toDos[sourceIndexPath.section].remove(at: sourceIndexPath.row)
+        toDos[destinationIndexPath.section].insert(removedTodo, at: destinationIndexPath.row)
+//        tableView.reloadRows(at: [sourceIndexPath], with: .automatic)
         
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         if !tableView.isEditing {
-            print(indexPath)
+            print(toDos[indexPath.section][indexPath.row])
             if toDos[indexPath.section][indexPath.row].symbol == ""  {
                 toDos[indexPath.section][indexPath.row].symbol = "✓"
             }else{
                 toDos[indexPath.section][indexPath.row].symbol = ""
             }
+            tableView.reloadRows(at: [indexPath], with: .automatic)
         } else {
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         }
-//        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     @objc func deleteTodoItems() {
         if let indexPaths = tableView.indexPathsForSelectedRows {
-            for indexPath in indexPaths.reversed() {
+            var newIndexPath = indexPaths
+            newIndexPath.sort { $0 < $1 }
+            
+            for indexPath in newIndexPath.reversed() {
                 print(indexPath)
                 toDos[indexPath.section].remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)

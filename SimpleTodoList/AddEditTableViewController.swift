@@ -27,9 +27,7 @@ class AddEditTableViewController: UITableViewController {
             title = "Add todo items"
         } else {
             title = "Edit todo item"
-//            print(todoText?.title)
             titleCell.textField.text = todoText?.title
-//            print(titleCell.textField.text)
         }
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismissViewController))
@@ -37,7 +35,7 @@ class AddEditTableViewController: UITableViewController {
         titleCell.textField.addTarget(self, action: #selector(textEditingChanged(_:)), for: .editingChanged)
         updateDoneButtonState()
     }
-
+    
     @objc func textEditingChanged(_ sender: UITextField){
         updateDoneButtonState()
     }
@@ -65,7 +63,7 @@ class AddEditTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return titleCell
     }
